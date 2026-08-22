@@ -1,53 +1,70 @@
+import { useState } from "react";
+import DashboardCards from "./DashboardCards";
+import MedicalRecords from "./MedicalRecords";
+
 function Maincontent() {
+    const [records, setRecords] = useState([
+        {
+            id: 1,
+            patient: "Suraj Sharma",
+            type: "Blood Test",
+            doctor: "Dr. Amit Patel",
+            date: "20 aug 2026",
+            status: "Completed",
+        },
+        {
+            id: 2,
+            patient: "Supriya Deshmukh",
+            type: "General Checkup",
+            doctor: "Dr. Neha Joshi",
+            date: "19 aug 2026",
+            status: "Pending",
+        },
+        {
+            id: 3,
+            patient: "aditya patil",
+            type: "X-Ray",
+            doctor: "Dr. Rahul Mehta",
+            date: "18 aug 2026",
+            status: "Completed"
+        },
+        {
+            id: 4,
+            patient: "Sachin kulkarni",
+            type: "Prescription",
+            doctor: "Dr. Amit Patel",
+            date: "17 aug 2026",
+            status: " Reviewed",
+        },
+    ]);
+
+    const [search, setSearch] = useState("");
+    const [showAll, setShowAll] = useState(false);
+
+    const filteredRecords = records.filter((record) =>
+        record.patient.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const displayedRecords = showAll ? filteredRecords : filteredRecords.slice(0, 4);
+    const getStatusClass = (status) => {
+        if (status === "Completed") {
+            return "badge bg-suceess";
+        };
+        if (status === "pending") {
+            return "badge bg-warning text-dark";
+        };
+        return "badge bg-info text-dark";
+    };
+
     return (
         <main className="p-4 flex-grow-1">
             <h2>Dashboard</h2>
             <p className="text-muted">
                 Welcome to your Digital Medical Records.
             </p>
-            <div className="row g-4 mt-2">
-
-                <div className="col-md-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <h6 className="text-muted">Total Petients</h6>
-                            <h2 className="fw-bold">128</h2>
-                            <p className="text-success mb-0">+8% this month</p>
-                        </div>
-                    </div>
-
-                </div>
-                <div className="col-md-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <h6 className="text-muted">Medical Records</h6>
-                            <h2 className="fw-bold">356</h2>
-                            <p className="text-success mb-0">+12% this month</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="col-md-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <h6 className="text-muted">Appointments</h6>
-                            <h2 className="fw-bold">24</h2>
-                            <p className="text-success mb-0">6 today</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="col-md-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <h6 className="text-muted">doctors</h6>
-                            <h2 className="fw-bold">18</h2>
-                            <p className="text-success mb-0">4 available today</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <DashboardCards recordsCount={records.length}/>
+            <MedicalRecords records={records} />
+            
         </main>
     );
 }
