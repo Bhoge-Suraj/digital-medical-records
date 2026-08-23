@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DashboardCards from "./DashboardCards";
 import MedicalRecords from "./MedicalRecords";
+import AddRecordForm from "./AddRecordForm";
 
 function Maincontent() {
     const [records, setRecords] = useState([
@@ -37,7 +38,7 @@ function Maincontent() {
             status: " Reviewed",
         },
     ]);
-
+    const [showAddForm, setShowAddForm] = useState(false);
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false);
 
@@ -63,7 +64,13 @@ function Maincontent() {
                 Welcome to your Digital Medical Records.
             </p>
             <DashboardCards recordsCount={records.length}/>
-            <MedicalRecords records={records} />
+            <MedicalRecords 
+                records={records}
+                onAddClick={() => setShowAddForm(true)} 
+            />
+            {showAddForm &&(
+                <AddRecordForm />
+            )}
             
         </main>
     );

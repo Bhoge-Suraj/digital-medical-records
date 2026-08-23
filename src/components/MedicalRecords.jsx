@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function MedicalRecords({ records }) {
+function MedicalRecords({ records, onAddClick }) {
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
 
@@ -29,14 +29,15 @@ function MedicalRecords({ records }) {
       <div className="card-body">
 
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <h5 className="mb-0">Recent Medical Records</h5>
-
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={() => setShowAll(!showAll)}
-          >
-            {showAll ? "Show Less" : "View All"}
-          </button>
+            <h5 className="mb-0">Recent Medical Records</h5>
+            <div>
+                <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => setShowAll(!showAll)}
+                >
+                    {showAll ? "Show Less" : "View All"}
+                </button>
+            </div>
         </div>
 
         <div className="mb-3">
@@ -88,7 +89,11 @@ function MedicalRecords({ records }) {
 
           </table>
         </div>
-
+        <div className="d-flex justify-content-end mt-3">
+            <button className="btn btn-success btn-sm me-2" onClick={onAddClick}>
+                + Add Record
+            </button>
+        </div>
       </div>
     </div>
   );
