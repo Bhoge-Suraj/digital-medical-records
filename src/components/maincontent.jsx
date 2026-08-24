@@ -35,7 +35,7 @@ function Maincontent() {
             type: "Prescription",
             doctor: "Dr. Amit Patel",
             date: "17 aug 2026",
-            status: " Reviewed",
+            status: "Reviewed",
         },
     ]);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -49,9 +49,9 @@ function Maincontent() {
     const displayedRecords = showAll ? filteredRecords : filteredRecords.slice(0, 4);
     const getStatusClass = (status) => {
         if (status === "Completed") {
-            return "badge bg-suceess";
+            return "badge bg-success";
         };
-        if (status === "pending") {
+        if (status === "Pending") {
             return "badge bg-warning text-dark";
         };
         return "badge bg-info text-dark";
@@ -69,7 +69,13 @@ function Maincontent() {
                 onAddClick={() => setShowAddForm(true)} 
             />
             {showAddForm &&(
-                <AddRecordForm />
+                <AddRecordForm 
+                    onAddRecord={(newRecord) => {
+                        setRecords([...records, newRecord]);
+                        setShowAddForm(false);
+                    }}
+                    onCancel={() => setShowAddForm(false)}
+                />
             )}
             
         </main>
