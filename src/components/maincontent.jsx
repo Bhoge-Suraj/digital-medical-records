@@ -1,43 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardCards from "./DashboardCards";
 import MedicalRecords from "./MedicalRecords";
 import AddRecordForm from "./AddRecordForm";
 
 function Maincontent() {
-    const [records, setRecords] = useState([
-        {
-            id: 1,
-            patient: "Suraj Sharma",
-            type: "Blood Test",
-            doctor: "Dr. Amit Patel",
-            date: "20 aug 2026",
-            status: "Completed",
-        },
-        {
-            id: 2,
-            patient: "Supriya Deshmukh",
-            type: "General Checkup",
-            doctor: "Dr. Neha Joshi",
-            date: "19 aug 2026",
-            status: "Pending",
-        },
-        {
-            id: 3,
-            patient: "aditya patil",
-            type: "X-Ray",
-            doctor: "Dr. Rahul Mehta",
-            date: "18 aug 2026",
-            status: "Completed"
-        },
-        {
-            id: 4,
-            patient: "Sachin kulkarni",
-            type: "Prescription",
-            doctor: "Dr. Amit Patel",
-            date: "17 aug 2026",
-            status: "Reviewed",
-        },
-    ]);
+    const [records, setRecords] = useState(() => {
+        const savedRecords = localStorage.getItem("medicalRecords");
+        if (savedRecords){
+            return JSON.parse(savedRecords);
+        }
+        
+        return []
+    });
+
+    useEffect(() => {
+        localStorage.setItem("medicalRecords", JSON.stringify(records));
+    }, [records]);
+
     const [showAddForm, setShowAddForm] = useState(false);
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false);
