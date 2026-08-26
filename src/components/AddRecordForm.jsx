@@ -1,5 +1,6 @@
-import { useState } from "react";
-function AddRecordForm ({onAddRecord, onCancel}) {
+import { useEffect, useState } from "react";
+
+function AddRecordForm ({onAddRecord, onCancel, editingRecord}) {
     const [formData, setFormData] = useState({
         patient: "",
         type: "",
@@ -7,6 +8,12 @@ function AddRecordForm ({onAddRecord, onCancel}) {
         date: "",
         status: "Pending",
     });
+
+    useEffect(() => {
+        if(editingRecord) {
+            setFormData(editingRecord);
+        }
+    }, [editingRecord]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -29,10 +36,17 @@ function AddRecordForm ({onAddRecord, onCancel}) {
             return;
         }
 
-        onAddRecord ({
-            id: Date.now(),
-            ...formData,
-        });
+        if (editingRecord){
+            onAddRecord({
+                ...editingRecord,
+                ...formData,
+            });
+        }else{
+            onAddRecord ({
+                id: Date.now(),
+                ...formData,
+            });
+        }   
 
         setFormData({
             patient: "",

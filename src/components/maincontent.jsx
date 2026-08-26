@@ -5,12 +5,16 @@ import AddRecordForm from "./AddRecordForm";
 
 function Maincontent() {
     const [records, setRecords] = useState(() => {
-        const savedRecords = localStorage.getItem("medicalRecords");
-        if (savedRecords){
-            return JSON.parse(savedRecords);
+        try {
+            const savedRecords = localStorage.getItem("medicalRecords");
+            if (savedRecords) {
+                return JSON.parse(savedRecords);
+            }
+            return [];
+        } catch (error) {
+            console.log("Failed to load medical records:", error);
+            return [];
         }
-        
-        return []
     });
 
     useEffect(() => {
@@ -18,8 +22,20 @@ function Maincontent() {
     }, [records]);
 
     const [showAddForm, setShowAddForm] = useState(false);
+    const [editingRecord, setEditingRecord] = useState(null);
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false);
+
+    const handleDeleteRecord = (recordId) => {
+        console.log("Deleting:", recordId);
+
+        const updatedRecords = records.filter(
+            (record) => record.id !== recordId
+        );
+
+        setRecords(updatedRecords);
+    };
+
 
     const filteredRecords = records.filter((record) =>
         record.patient.toLowerCase().includes(search.toLowerCase())
@@ -42,21 +58,37 @@ function Maincontent() {
             <p className="text-muted">
                 Welcome to your Digital Medical Records.
             </p>
-            <DashboardCards recordsCount={records.length}/>
-            <MedicalRecords 
+            <DashboardCards recordsCount={records.length} />
+            <MedicalRecords
                 records={records}
-                onAddClick={() => setShowAddForm(true)} 
+                onAddClick={() => setShowAddForm(true)}
+                onDeleteRecord={handleDeleteRecord}
+                onEditRecord={(record) => {
+                    setEditingRecord(record);
+                    setShowAddForm(true);
+                }}
             />
-            {showAddForm &&(
-                <AddRecordForm 
+            {showAddForm && (
+                <AddRecordForm
+                    editingRecord={editingRecord}
                     onAddRecord={(newRecord) => {
-                        setRecords([...records, newRecord]);
+                        if (editingRecord) {
+                            setRecords(
+                                records.map((record) =>
+                                    record.id === editingRecord.id ? newRecord : record
+                                )
+                            );
+                            setEditingRecord(null);
+                        } else {
+                            setRecords([...records, newRecord]);
+                        }
+
                         setShowAddForm(false);
                     }}
                     onCancel={() => setShowAddForm(false)}
                 />
             )}
-            
+
         </main>
     );
 }
