@@ -61,7 +61,7 @@ function Maincontent() {
             <DashboardCards recordsCount={records.length} />
             <MedicalRecords
                 records={records}
-                onAddClick={() => setShowAddForm(true)}
+                onAddClick={() => {setShowAddForm(true); setEditingRecord(null);}}
                 onDeleteRecord={handleDeleteRecord}
                 onEditRecord={(record) => {
                     setEditingRecord(record);
@@ -85,7 +85,7 @@ function Maincontent() {
 
                         setShowAddForm(false);
                     }}
-                    onCancel={() => setShowAddForm(false)}
+                    onCancel={() => {setShowAddForm(false); setEditingRecord(null);}}
                 />
             )}
 

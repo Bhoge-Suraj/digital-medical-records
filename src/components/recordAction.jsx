@@ -10,7 +10,12 @@ function RecordAction ({record, onEdit, onDelete}) {
 
             <button
                 className="btn btn-sm btn-outline-danger"
-                onClick = {() => onDelete(record.id)}
+                onClick = {() =>{
+                    const confirmed = window.confirm("Are you sure you want to delete this medical record");
+                    if (confirmed){
+                        onDelete(record.id);
+                    }
+                }}
             >
                 Delete
             </button>
