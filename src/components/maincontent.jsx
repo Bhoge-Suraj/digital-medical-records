@@ -38,7 +38,9 @@ function Maincontent() {
 
 
     const filteredRecords = records.filter((record) =>
-        record.patient.toLowerCase().includes(search.toLowerCase())
+        record.patient.toLowerCase().includes(search.toLowerCase()) ||
+        record.doctor.toLowerCase().includes(search.toLowerCase()) ||
+        record.type.toLowerCase().includes(search.toLowerCase())
     );
 
     const displayedRecords = showAll ? filteredRecords : filteredRecords.slice(0, 4);
@@ -60,7 +62,7 @@ function Maincontent() {
             </p>
             <DashboardCards recordsCount={records.length} />
             <MedicalRecords
-                records={records}
+                records={displayedRecords}
                 onAddClick={() => {setShowAddForm(true); setEditingRecord(null);}}
                 onDeleteRecord={handleDeleteRecord}
                 onEditRecord={(record) => {

@@ -6,7 +6,9 @@ function MedicalRecords({ records, onAddClick, onDeleteRecord, onEditRecord, }) 
     const [showAll, setShowAll] = useState(false);
 
     const filteredRecords = records.filter((record) =>
-        record.patient.toLowerCase().includes(search.toLowerCase())
+        record.patient.toLowerCase().includes(search.toLowerCase()) ||
+        record.doctor.toLowerCase().includes(search.toLowerCase()) ||
+        record.type.toLowerCase().includes(search.toLowerCase())
     );
 
     const displayedRecords = showAll
@@ -42,13 +44,23 @@ function MedicalRecords({ records, onAddClick, onDeleteRecord, onEditRecord, }) 
                 </div>
 
                 <div className="mb-3">
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search patient..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                    <div className="position-relative mb-3">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search patient..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <span
+                            className="position-absolute end-0 top-50 translate-middle-y me-3"
+                            onClick={() => setSearch ("")}
+                            style={{cursor: "pointer", zIndex: 10}}
+
+                        >
+                            <i className="bi bi-x-lg"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <div className="table-responsive">
