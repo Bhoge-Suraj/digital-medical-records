@@ -25,6 +25,8 @@ function Maincontent() {
     const [editingRecord, setEditingRecord] = useState(null);
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false);
+    const [statusFilter, setStatusFilter] = useState("All");
+    const [loading, setLoading] = useState(false);
 
     const handleDeleteRecord = (recordId) => {
         console.log("Deleting:", recordId);
@@ -38,9 +40,15 @@ function Maincontent() {
 
 
     const filteredRecords = records.filter((record) =>
-        record.patient.toLowerCase().includes(search.toLowerCase()) ||
-        record.doctor.toLowerCase().includes(search.toLowerCase()) ||
-        record.type.toLowerCase().includes(search.toLowerCase())
+        (
+            record.patient.toLowerCase().includes(search.toLowerCase()) ||
+            record.doctor.toLowerCase().includes(search.toLowerCase()) ||
+            record.type.toLowerCase().includes(search.toLowerCase())
+        ) &&
+        (
+            statusFilter === "All" ||
+            record.status === statusFilter
+        )
     );
 
     const displayedRecords = showAll ? filteredRecords : filteredRecords.slice(0, 4);
@@ -61,14 +69,24 @@ function Maincontent() {
                 Welcome to your Digital Medical Records.
             </p>
             <DashboardCards recordsCount={records.length} />
+            {loading && (
+                <div className="text-center py-4">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-2 mb-0">Loading medical records...</p>
+                </div>
+            )}
             <MedicalRecords
                 records={displayedRecords}
-                onAddClick={() => {setShowAddForm(true); setEditingRecord(null);}}
+                onAddClick={() => { setShowAddForm(true); setEditingRecord(null); }}
                 onDeleteRecord={handleDeleteRecord}
                 onEditRecord={(record) => {
                     setEditingRecord(record);
                     setShowAddForm(true);
                 }}
+                statusFilter={statusFilter}
+                onStatusFilterChange={setStatusFilter}
             />
             {showAddForm && (
                 <AddRecordForm
@@ -87,7 +105,7 @@ function Maincontent() {
 
                         setShowAddForm(false);
                     }}
-                    onCancel={() => {setShowAddForm(false); setEditingRecord(null);}}
+                    onCancel={() => { setShowAddForm(false); setEditingRecord(null); }}
                 />
             )}
 

@@ -1,7 +1,14 @@
 import { useState } from "react";
 import RecordAction from "./recordAction";
 
-function MedicalRecords({ records, onAddClick, onDeleteRecord, onEditRecord, }) {
+function MedicalRecords({ 
+    records, 
+    onAddClick, 
+    onDeleteRecord, 
+    onEditRecord,
+    statusFilter, 
+    onStatusFilterChange 
+}) {
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false);
 
@@ -54,8 +61,8 @@ function MedicalRecords({ records, onAddClick, onDeleteRecord, onEditRecord, }) 
                         />
                         <span
                             className="position-absolute end-0 top-50 translate-middle-y me-3"
-                            onClick={() => setSearch ("")}
-                            style={{cursor: "pointer", zIndex: 10}}
+                            onClick={() => setSearch("")}
+                            style={{ cursor: "pointer", zIndex: 10 }}
 
                         >
                             <i className="bi bi-x-lg"></i>
@@ -63,60 +70,74 @@ function MedicalRecords({ records, onAddClick, onDeleteRecord, onEditRecord, }) 
                     </div>
                 </div>
 
-                <div className="table-responsive">
-                    <table className="table table-hover align-middle mb-0">
-
-                        <thead className="table-light">
-                            <tr>
-                                <th>Patient</th>
-                                <th>Record Type</th>
-                                <th>Doctor</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {displayedRecords.length > 0 ? (
-                                displayedRecords.map((record) => (
-                                    <tr key={record.id}>
-                                        <td>{record.patient}</td>
-                                        <td>{record.type}</td>
-                                        <td>{record.doctor}</td>
-                                        <td>{record.date}</td>
-                                        <td>
-                                            <span className={getStatusClass(record.status)}>
-                                                {record.status}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <RecordAction
-                                                record={record}
-                                                onEdit={onEditRecord}
-                                                onDelete={onDeleteRecord}
-                                            />
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="6" className="text-center py-4">
-                                        No medical records found.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-
-                    </table>
-                </div>
-                <div className="d-flex justify-content-end mt-3">
-                    <button className="btn btn-success btn-sm me-2" onClick={onAddClick}>
-                        + Add Record
-                    </button>
+                <div className="mb-3">
+                    <select
+                        className="form-select"
+                        value={statusFilter}
+                        onChange={(e) => onStatusFilterChange(e.target.value)}
+                    >
+                        <option value="All">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Reviewed">Reviewed</option>
+                        <option value="Completed">Completed</option>
+                    </select>
                 </div>
             </div>
+
+            <div className="table-responsive">
+                <table className="table table-hover align-middle mb-0">
+
+                    <thead className="table-light">
+                        <tr>
+                            <th>Patient</th>
+                            <th>Record Type</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {displayedRecords.length > 0 ? (
+                            displayedRecords.map((record) => (
+                                <tr key={record.id}>
+                                    <td>{record.patient}</td>
+                                    <td>{record.type}</td>
+                                    <td>{record.doctor}</td>
+                                    <td>{record.date}</td>
+                                    <td>
+                                        <span className={getStatusClass(record.status)}>
+                                            {record.status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <RecordAction
+                                            record={record}
+                                            onEdit={onEditRecord}
+                                            onDelete={onDeleteRecord}
+                                        />
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="6" className="text-center py-4">
+                                    No medical records found.
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+
+                </table>
+            </div>
+            <div className="d-flex justify-content-end mt-3">
+                <button className="btn btn-success btn-sm me-2" onClick={onAddClick}>
+                    + Add Record
+                </button>
+            </div>
         </div>
+       
     );
 }
 

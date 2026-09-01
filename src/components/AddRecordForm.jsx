@@ -6,7 +6,7 @@ function AddRecordForm ({onAddRecord, onCancel, editingRecord}) {
         type: "",
         doctor: "",
         date: "",
-        status: "",
+        status: "Pending",
     });
 
     useEffect(() => {
@@ -53,7 +53,7 @@ function AddRecordForm ({onAddRecord, onCancel, editingRecord}) {
             type: "",
             doctor: "", 
             date: "", 
-            status: "",
+            status: "pending",
         });
     };
 
