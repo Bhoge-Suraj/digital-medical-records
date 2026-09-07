@@ -2,40 +2,49 @@ import { useEffect, useState } from "react";
 import DashboardCards from "./DashboardCards";
 import MedicalRecords from "./MedicalRecords";
 import AddRecordForm from "./AddRecordForm";
+import { getRecords, createRecord, updateRecord, deleteRecord } from "../services/recordService";
 
 function Maincontent() {
-    const [records, setRecords] = useState(() => {
-        try {
-            const savedRecords = localStorage.getItem("medicalRecords");
-            if (savedRecords) {
-                return JSON.parse(savedRecords);
-            }
-            return [];
-        } catch (error) {
-            console.log("Failed to load medical records:", error);
-            return [];
-        }
-    });
-
-    useEffect(() => {
-        localStorage.setItem("medicalRecords", JSON.stringify(records));
-    }, [records]);
-
+    const [records, setRecords] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingRecord, setEditingRecord] = useState(null);
     const [search, setSearch] = useState("");
     const [showAll, setShowAll] = useState(false);
     const [statusFilter, setStatusFilter] = useState("All");
-    const [loading, setLoading] = useState(false);
 
-    const handleDeleteRecord = (recordId) => {
-        console.log("Deleting:", recordId);
+    useEffect(() => {
+        const fetchRecords = async () => {
+            try {
+                setLoading(true);
+                setError("");
 
-        const updatedRecords = records.filter(
-            (record) => record.id !== recordId
-        );
+                const data = await getRecords();
 
-        setRecords(updatedRecords);
+                setRecords(data);
+            } catch (error) {
+                console.error("Error fetching records:", error);
+                setError("Unable to load medical records.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchRecords();
+    }, []);
+
+    const handleDeleteRecord = async (recordId) => {
+        try {
+            setError("");
+            await deleteRecord(recordId);
+            setRecords((currentRecords) =>
+                currentRecords.filter((record) => record.id !== recordId)
+            );
+        } catch (error) {
+            console.error("Error deleting medical record:", error);
+            setError("Unable to delete medical record.");
+        }
     };
 
 
@@ -91,16 +100,36 @@ function Maincontent() {
             {showAddForm && (
                 <AddRecordForm
                     editingRecord={editingRecord}
-                    onAddRecord={(newRecord) => {
+                    onAddRecord={async (newRecord) => {
                         if (editingRecord) {
-                            setRecords(
-                                records.map((record) =>
-                                    record.id === editingRecord.id ? newRecord : record
-                                )
-                            );
-                            setEditingRecord(null);
+                            try {
+                                setError("");
+
+                                const updatedRecord = await updateRecord(
+                                    editingRecord.id,
+                                    newRecord
+                                );
+
+                                setRecords((currentRecords) =>
+                                    currentRecords.map((record) =>
+                                        record.id === editingRecord.id ? updatedRecord : record
+                                    )
+                                );
+
+                                setEditingRecord(null);
+                            } catch (error) {
+                                console.error("Error updating medical record:", error);
+                                setError("Unable to update medical record.");
+                                return;
+                            }
                         } else {
-                            setRecords([...records, newRecord]);
+                            try {
+                                const savedRecord = await createRecord(newRecord);
+                                setRecords([...records, savedRecord]);
+                            } catch (error) {
+                                console.error("Error creating medical record:", error);
+                                setError("Unable to save medical record.");
+                            }
                         }
 
                         setShowAddForm(false);

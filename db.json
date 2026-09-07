@@ -1,7 +1,7 @@
 {
   "records": [
     {
-      "id": 1,
+      "id": "1",
       "patient": "Suraj Bhoge",
       "type": "Blood Test",
       "doctor": "Dr. Chandrakant",
@@ -9,20 +9,21 @@
       "status": "Pending"
     },
     {
-      "id": 2,
-      "patient": "Rahul Patil",
+      "id": "2",
+      "patient": "Amit Sharma",
       "type": "X-Ray",
       "doctor": "Dr. Sharma",
       "date": "2026-08-21",
       "status": "Reviewed"
     },
     {
-      "id": 3,
+      "id": "3",
       "patient": "Priya Joshi",
       "type": "MRI",
       "doctor": "Dr. Deshmukh",
       "date": "2026-08-22",
       "status": "Completed"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
