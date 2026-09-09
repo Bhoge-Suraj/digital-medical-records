@@ -1,14 +1,6 @@
 {
   "records": [
     {
-      "id": "1",
-      "patient": "Suraj Bhoge",
-      "type": "Blood Test",
-      "doctor": "Dr. Chandrakant",
-      "date": "2026-08-20",
-      "status": "Pending"
-    },
-    {
       "id": "2",
       "patient": "Amit Sharma",
       "type": "X-Ray",
