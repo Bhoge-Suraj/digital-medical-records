@@ -1,3 +1,6 @@
+import {NavLink} from "react-router-dom";
+
+
 function Sidebar() {
     return (
         <div className="bg-primary text-white p-3" style={{minHeight: "100vh", width: "250px"}}>
@@ -5,33 +8,33 @@ function Sidebar() {
 
             <ul className="nav flex-column">
                 <li className="nav-item mb-2" >
-                    <a href="#" className="nav-link text-white">
+                    <NavLink to="/dashboard" className="nav-link text-white">
                         Dashboard
-                    </a>
+                    </NavLink>
                 </li>
 
                 <li className="nav-item mb-2" >
-                    <a href="#" className="nav-link text-white">
+                    <NavLink to="/medical-records" className="nav-link text-white">
                         Medical Records
-                    </a>
+                    </NavLink>
                 </li>
 
                 <li className="nav-item mb-2" >
-                    <a href="#" className="nav-link text-white">
+                    <NavLink to="/doctors" className="nav-link text-white">
                         Doctors
-                    </a>
+                    </NavLink>
                 </li>
 
                 <li className="nav-item mb-2" >
-                    <a href="#" className="nav-link text-white">
+                    <NavLink to="/appointments" className="nav-link text-white">
                         Appointments
-                    </a>
+                    </NavLink>
                 </li>
 
                 <li className="nav-item mb-2" >
-                    <a href="#" className="nav-link text-white">
+                    <NavLink to="reports" className="nav-link text-white">
                         Reports
-                    </a>
+                    </NavLink>
                 </li>
             </ul>
         </div>

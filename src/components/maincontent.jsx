@@ -125,7 +125,7 @@ function Maincontent() {
                         } else {
                             try {
                                 const savedRecord = await createRecord(newRecord);
-                                setRecords([...records, savedRecord]);
+                                setRecords((currentRecords) => [...currentRecords, savedRecord]);
                             } catch (error) {
                                 console.error("Error creating medical record:", error);
                                 setError("Unable to save medical record.");
