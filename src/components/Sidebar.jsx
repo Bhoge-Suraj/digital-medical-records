@@ -32,7 +32,7 @@ function Sidebar() {
                 </li>
 
                 <li className="nav-item mb-2" >
-                    <NavLink to="reports" className="nav-link text-white">
+                    <NavLink to="/reports" className="nav-link text-white">
                         Reports
                     </NavLink>
                 </li>

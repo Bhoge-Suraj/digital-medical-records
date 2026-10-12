@@ -6,7 +6,7 @@ function AddRecordForm ({onAddRecord, onCancel, editingRecord}) {
         type: "",
         doctor: "",
         date: "",
-        status: "Pending",
+        status: "pending",
     });
 
     useEffect(() => {
@@ -72,7 +72,7 @@ function AddRecordForm ({onAddRecord, onCancel, editingRecord}) {
                         <div className="col-md-6">
                             <label className="form-label">Record Type</label>
                             <select name="type"  className="form-select" value={formData.type} onChange={handleChange}>
-                                <option value=" ">Select Record Type</option>
+                                <option value="">Select Record Type</option>
                                 <option value="Blood Test">Blood Test</option>
                                 <option value="General Checkup">General Checkup</option>
                                 <option value="X-Ray">X-Ray</option>
