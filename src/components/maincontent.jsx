@@ -106,7 +106,7 @@ function Maincontent() {
                                 setError("");
 
                                 const updatedRecord = await updateRecord(
-                                    editingRecord.id,
+                                    editingRecord._id,
                                     newRecord
                                 );
 

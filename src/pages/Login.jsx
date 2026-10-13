@@ -39,7 +39,11 @@ function Login() {
                 formData.password
             );
 
-            console.log("Logged in user:", user);
+            console.log("Login successful:", {
+                id: user.id,
+                name: user.name,
+                tokenExists: Boolean(user.token)
+            });
             login(user);
             navigate("/dashboard");
 

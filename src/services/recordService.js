@@ -1,7 +1,20 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "http://localhost:5001/api/records";
+const getAuthHeaders = () => {
+  const savedUser = JSON.parse(
+    localStorage.getItem("medical_user") || "null"
+  );
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${savedUser?.token || ""}`,
+  };
+};
 
 export const getRecords = async () => {
-  const response = await fetch(API_URL);
+  const response = await fetch(API_URL, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch medical records");
@@ -13,9 +26,7 @@ export const getRecords = async () => {
 export const createRecord = async (record) => {
   const response = await fetch(API_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(record),
   });
 
@@ -29,6 +40,7 @@ export const createRecord = async (record) => {
 export const deleteRecord = async (recordId) => {
   const response = await fetch(`${API_URL}/${recordId}`, {
     method: "DELETE",
+    headers: getAuthHeaders(),
   });
 
   if (!response.ok) {
@@ -41,9 +53,7 @@ export const deleteRecord = async (recordId) => {
 export const updateRecord = async (recordId, record) => {
   const response = await fetch(`${API_URL}/${recordId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(record),
   });
 

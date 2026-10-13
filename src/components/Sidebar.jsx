@@ -1,9 +1,18 @@
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 
 function Sidebar() {
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/login", { replace: true });
+    };
     return (
-        <div className="bg-primary text-white p-3" style={{minHeight: "100vh", width: "250px"}}>
+        <div className="bg-primary text-white p-3" style={{ minHeight: "100vh", width: "250px" }}>
             <h4 className="mb-4">Medical Records</h4>
 
             <ul className="nav flex-column">
@@ -37,6 +46,12 @@ function Sidebar() {
                     </NavLink>
                 </li>
             </ul>
+            <button
+                className="btn btn-light text-primary mt-4 w-100"
+                onClick={handleLogout}
+            >
+                Logout
+            </button>
         </div>
     )
 }
